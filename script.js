@@ -1,81 +1,90 @@
 const quizData = [
-    {
+  {
     question: "Which language runs in a web browser?",
-    a: "Java",
-    b: "C",
-    c: "Python",
-    d: "JavaScript",
+    variants: ["Java", "C", "Python", "JavaScript"],
     correct: "JavaScript",
-    },
-    {
+  },
+  {
     question: "What does CSS stand for?",
-    a: "Central Style Sheets",
-    b: "Cascading Style Sheets",
-    c: "Cascading Simple Sheets",
-    d: "Cars SUVs Sailboats",
+    variants: [
+      "Central Style Sheets",
+      "Cascading Style Sheets",
+      "Cascading Simple Sheets",
+      "Cars SUVs Sailboats",
+    ],
     correct: "Cascading Style Sheets",
-    },
-    {
+  },
+  {
     question: "What does HTML stand for?",
-    a: "Hypertext Markup Language",
-    b: "Hypertext Markdown Language",
-    c: "Hyperloop Machine Language",
-    d: "Helicopters Terminals Motorboats Lamborginis",
+    variants: [
+      "Hypertext Markup Language",
+      "Hypertext Markdown Language",
+      "Hyperloop Machine Language",
+      "Helicopters Terminals Motorboats Lamborginis",
+    ],
     correct: "Hypertext Markup Language",
-    },
-    {
+  },
+  {
     question: "What year was JavaScript launched?",
-    a: "1996",
-    b: "1995",
-    c: "1994",
-    d: "none of the above",
+    variants: ["1996", "1995", "1994", "none of the above"],
     correct: "1995",
-    },
+  },
 ];
 
 let submitBtn = document.querySelector(".submit-btn");
-let index = 0;
+let questionStep = 0;
+// It is best to name variables in a way that is 100% clear,
+// even if it is already clear, but index can simply
+// be confused with for map, and so on.
 let score = 0;
-let currentQuiz = quizData[index]
-submitBtn.addEventListener("click",()=>{
-    // New concept learned 
-    const selectedValue = document.querySelector('input[type="radio"]:checked');
-    console.log(selectedValue.value);
-    if (selectedValue.value === quizData[index].correct) {
-        score++;
-    }
-    index++;
-    if (index < quizData.length) {
-        showNextQuestion();
-    } 
-    else {
-        showFinalScore();
-    }
+let currentQuiz = quizData[questionStep];
+submitBtn.addEventListener("click", (event) => {
+  // the value could be obtained by event
+  const selectedValue = document.querySelector('input[type="radio"]:checked');
+
+  if (selectedValue.value === quizData[questionStep].correct) {
+    score++;
+  }
+  questionStep++;
+  if (questionStep < quizData.length) {
+    showNextQuestion();
+  } else {
+    showFinalScore();
+  }
 });
 
 function showNextQuestion() {
-      let quizHeader = document.querySelector(".quiz-header");
-      let currentQuestion = quizData[index];
-      quizHeader.innerHTML = `<h2>${currentQuestion.question}</h2>
-      <input type="radio" name="quiz-option" value="${currentQuestion.a}" />
-      <label for="a_text">${currentQuestion.a}</label><br />
-      <input type="radio" name="quiz-option" value="${currentQuestion.b}" />
-      <label for="b_text">${currentQuestion.b}</label><br />
-      <input type="radio" name="quiz-option" value="${currentQuestion.c}" />
-      <label for="c_text">${currentQuestion.c}</label><br />
-      <input type="radio" name="quiz-option" value="${currentQuestion.d}" />
-      <label for="d_text">${currentQuestion.d}</label>`;
+  let quizHeader = document.querySelector(".quiz-header");
+  quizHeader.innerHTML = `<h2>${quizData[questionStep].question}</h2>`;
+
+  // We have thrown all the possible answers into an array,
+  // which we iterate through and immediately add to our element.
+  // Before adding, we outline it with the assignment
+  // = in which the question is written.
+
+  quizData[questionStep].map((variant) => {
+    quizHeader.innerHTML += `
+    <input type="radio" name="quiz-option" value="${variant}" />
+    <label for="a_text">${variant}</label><br />`;
+  });
 }
 
 function showFinalScore() {
-    let quizHeader = document.querySelector(".quiz-header");
-    quizHeader.innerHTML = `<h2>You answered ${score} questions correctly.</h2>`;
-    let playAgainBtn = submitBtn;
-    playAgainBtn.innerText = "Play Again";
-    playAgainBtn.addEventListener("click",()=>{
-        location.reload();
-    })
+  let quizHeader = document.querySelector(".quiz-header");
+  quizHeader.innerHTML = `<h2>You answered ${score} questions correctly.</h2>`;
+  let playAgainBtn = submitBtn;
+  playAgainBtn.innerText = "Play Again";
+  playAgainBtn.addEventListener("click", () => {
+    location.reload();
+  });
 }
 
-
 showNextQuestion();
+
+
+// You have a very cool project, 
+// I hope with these examples I have expanded your horizons 
+// a little on the options for an approach to work, 
+// with the help of such methods, you can add any number of questions! 
+// Good luck with your studies, 
+// you'll be able to take on a bigger task and you'll be strong!
